@@ -1,7 +1,8 @@
 import React from "react";
 import TodoList from "./components/TodoList";
+import TodoForm from "./components/TodoForm";
 
-const activities = [
+const data = [
   {
     task: "Fold the laundry",
     id: 123,
@@ -29,20 +30,55 @@ class App extends React.Component {
     //"C" built my constructor function
     super();
     this.state = {
-      activities: activities
+      activities: data
     };
-    console.log(activities);
+    console.log(this.state.activities);
   }
 
-  // handleChangeFunction = event =>{
-  //   this.setState({event.target.value})
-  // }
+  //class method to update state
+  toggleTodo = id => {
+    this.setState({
+      activities: this.state.activities.map(item => {
+        if (item.id === id) {
+          return {
+            ...item,
+            completed: !item.completed
+          };
+        }
+        return item;
+      })
+    });
+
+    //update activities
+    // this.setState({
+    //   activities: newActivities
+    // });
+  };
+
+  addItem = (e, item) => {
+    console.log("ITEM", item);
+    e.preventDefault();
+    const newItem = {
+      task: item,
+      id: Date.now(),
+      completed: false
+    };
+    console.log("NEW ITEM", newItem);
+    this.setState({
+      activities: [...this.state.activities, newItem]
+    });
+  };
+
   render() {
     //"R" don't forget about the render
     return (
       <div>
         <h2>Welcome to your Todo App !</h2>
-        <TodoList activities={this.state.activities} />
+        <TodoForm addItem={this.addItem} />
+        <TodoList
+          activities={this.state.activities}
+          toggleTodo={this.toggleTodo}
+        />
       </div>
     );
   }
