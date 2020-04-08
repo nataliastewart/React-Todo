@@ -6,18 +6,18 @@ const data = [
   {
     task: "Fold the laundry",
     id: 123,
-    completed: false
+    completed: false,
   },
   {
     task: "Walk the dogs",
     id: 1234,
-    completed: false
+    completed: false,
   },
   {
     task: "Cook the dinner",
     id: 12345,
-    completed: false
-  }
+    completed: false,
+  },
 ];
 
 class App extends React.Component {
@@ -30,23 +30,39 @@ class App extends React.Component {
     //"C" built my constructor function
     super();
     this.state = {
-      activities: data
+      activities: data,
+      item: "",
     };
     console.log(this.state.activities);
   }
 
-  //class method to update state
-  toggleTodo = id => {
+  handleChanges = (e) => {
+    //update state with each key
     this.setState({
-      activities: this.state.activities.map(item => {
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  //class property to submit form
+  // handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("STATE", this.state.item);
+  //   this.props.addItem(e, this.state.item);
+  //   this.setState({ item: "" });
+  // };
+
+  //class method to update state
+  toggleTodo = (id) => {
+    this.setState({
+      activities: this.state.activities.map((item) => {
         if (item.id === id) {
           return {
             ...item,
-            completed: !item.completed
+            completed: !item.completed,
           };
         }
         return item;
-      })
+      }),
     });
 
     //update activities
@@ -59,14 +75,38 @@ class App extends React.Component {
     console.log("ITEM", item);
     e.preventDefault();
     const newItem = {
-      task: item,
+      task: this.state.item,
       id: Date.now(),
-      completed: false
+      completed: false,
     };
     console.log("NEW ITEM", newItem);
     this.setState({
-      activities: [...this.state.activities, newItem]
+      activities: [...this.state.activities, newItem],
+      item: "",
     });
+  };
+
+  handleTask = (e) => {
+    const todos = this.state.activities.map((item) => {
+      if (item.id === e) {
+        item.completed = !item.completed;
+        return item;
+      } else {
+        return item;
+      }
+    });
+    this.setState({ todos });
+  };
+
+  handleClear = (e) => {
+    e.preventDefault();
+    const deleteAll = this.state.activities.filter((item) => !item.completed);
+    this.setState({
+      activities: deleteAll,
+      item: "",
+    });
+
+    console.log("DELETE ALL", deleteAll);
   };
 
   render() {
@@ -74,10 +114,17 @@ class App extends React.Component {
     return (
       <div>
         <h2>Welcome to your Todo App !</h2>
-        <TodoForm addItem={this.addItem} />
+        <TodoForm
+          addItem={this.addItem}
+          activities={this.state.activities}
+          handleClear={this.handleClear}
+          item={this.state.item}
+          handleChanges={this.handleChanges}
+        />
         <TodoList
           activities={this.state.activities}
           toggleTodo={this.toggleTodo}
+          handleTask={this.handleTask}
         />
       </div>
     );
