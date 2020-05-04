@@ -14,8 +14,8 @@ const array = [
     task: 'Bake Cookies',
     id: 1528817084358,
     completed: false
-  }
-    {
+  },
+  {
     task: 'Walk the dogs',
     id: 1528817084448,
     completed: false
@@ -32,6 +32,26 @@ class App extends React.Component {
   }
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
+  toggleTodo = (clickedID) => {
+    const newArray = this.state.todoData.map((item => {
+      if (item.id === clickedID) {
+        return {
+          ...item,
+          completed: !item.completed
+        }
+      } else {
+        return item;
+      }
+
+    })
+    )
+    this.setState({
+      todoData: newArray
+    });
+
+  }
+
+
   render() {
     return (
       <div className="App">
@@ -39,7 +59,7 @@ class App extends React.Component {
           <h2>Welcome to your Todo App!</h2>
           <TodoForm />
         </div>
-        <TodoList todoData={this.state.todoData} />
+        <TodoList todoData={this.state.todoData} toggleTodo={this.toggleTodo} />
       </div>
     );
   }
