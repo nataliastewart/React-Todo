@@ -15,6 +15,11 @@ const array = [
     id: 1528817084358,
     completed: false
   }
+    {
+    task: 'Walk the dogs',
+    id: 1528817084448,
+    completed: false
+  }
 ];
 
 class App extends React.Component {
