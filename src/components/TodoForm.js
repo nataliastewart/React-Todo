@@ -12,7 +12,7 @@ export default function TodoForm(props) {
           onChange={props.handleChange}
         />
         <button type="submit">Add Todo</button>
-        <button>Clear Completed</button>
+        <button onClick={props.handleClear}>Clear Completed</button>
       </form>
     </div>
   );

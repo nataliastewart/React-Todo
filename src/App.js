@@ -70,6 +70,17 @@ class App extends React.Component {
     });
   };
 
+  handleClear = (e) => {
+    e.preventDefault();
+    const deleteCompleted = this.state.todoData.filter(
+      (item) => !item.completed
+    );
+    this.setState({
+      todoData: deleteCompleted,
+      item: "",
+    });
+  };
+
   render() {
     return (
       <div className="App">
@@ -80,6 +91,7 @@ class App extends React.Component {
             addNewItem={this.addNewItem}
             handleSubmit={this.handleSubmit}
             todoData={this.state.todoData}
+            handleClear={this.handleClear}
           />
         </div>
         <TodoList todoData={this.state.todoData} toggleTodo={this.toggleTodo} />
